@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  web:
+    build: ./app
+    container_name: blog_web
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./app:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_NAME=blogdb
+      - DB_USER=bloguser
+      - DB_PASSWORD=blogpass
+      - DB_HOST=db
+      - DB_PORT=5432
+
+  db:
+    image: postgres:14
+    container_name: blog_db
+    restart: always
+    environment:
+      POSTGRES_DB: blogdb
+      POSTGRES_USER: bloguser
+      POSTGRES_PASSWORD: blogpass
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+volumes:
+  postgres_data:
