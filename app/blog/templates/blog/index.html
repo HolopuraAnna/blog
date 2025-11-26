@@ -1,5 +1,20 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-<h1>Ласкаво просимо до Блогу!</h1>
+<h1>Статті блогу</h1>
+
+{% if posts %}
+    <ul>
+        {% for post in posts %}
+            <li>
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.text|truncatewords:20 }}</p>
+                <small>{{ post.created_at }}</small>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Статей поки немає.</p>
+{% endif %}
+
 {% endblock %}
