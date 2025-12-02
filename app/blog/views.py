@@ -16,3 +16,11 @@ def index(request):
     }
     
     return render(request, 'blog/index.html', context)
+
+
+def post_list(request):
+    posts = Post.objects.order_by('-created_at')
+    context = {
+        'posts': posts
+    }
+    return render(request, 'blog/post_list.html', context)
