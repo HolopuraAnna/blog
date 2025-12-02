@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Post, Author, Comment
 
 def index(request):
@@ -24,3 +24,14 @@ def post_list(request):
         'posts': posts
     }
     return render(request, 'blog/post_list.html', context)
+
+
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    comments = Comment.objects.filter(post=post).order_by('-created_at')
+
+    context = {
+        'post': post,
+        'comments': comments,
+    }
+    return render(request, 'blog/post_detail.html', context)

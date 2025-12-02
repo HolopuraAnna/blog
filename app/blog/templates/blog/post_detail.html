@@ -1,0 +1,30 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ post.title }}</h1>
+
+<p><strong>Автор:</strong> {{ post.author }}</p>
+<p><strong>Дата публікації:</strong> {{ post.created_at|date:"d.m.Y H:i" }}</p>
+
+<hr>
+
+<p>{{ post.content }}</p>
+
+<hr>
+
+<h3>Коментарі:</h3>
+
+<ul>
+  {% for comment in comments %}
+    <li>
+      {{ comment.text }}<br>
+      <small>{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+    </li>
+  {% empty %}
+    <li>Коментарів ще немає.</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
