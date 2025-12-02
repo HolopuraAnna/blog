@@ -1,0 +1,14 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<h1>Категорії</h1>
+
+<ul>
+  {% for category in categories %}
+    <li>{{ category.name }}</li>
+  {% empty %}
+    <li>Категорій поки що немає.</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

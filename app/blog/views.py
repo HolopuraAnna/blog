@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Author, Comment
+from .models import Post, Author, Comment, Category
 
 def index(request):
     post_num = Post.objects.count()
@@ -35,3 +35,11 @@ def post_detail(request, pk):
         'comments': comments,
     }
     return render(request, 'blog/post_detail.html', context)
+
+
+def category_list(request):
+    categories = Category.objects.all()
+    context = {
+        'categories': categories,
+    }
+    return render(request, 'blog/category_list.html', context)
