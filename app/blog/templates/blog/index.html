@@ -8,4 +8,18 @@
   <li>Автори: {{ author_num }}</li>
   <li>Коментарі: {{ comment_num }}</li>
 </ul>
+
+<hr>
+
+<h3>3 останні пости</h3>
+<ul>
+  {% for post in latest_posts %}
+    <li>
+      <strong>{{ post.title }}</strong><br>
+      <small>Автор: {{ post.author }} • {{ post.created_at|date:"d.m.Y H:i" }}</small>
+    </li>
+  {% empty %}
+    <li>Поки що немає жодної статті.</li>
+  {% endfor %}
+</ul>
 {% endblock %}
