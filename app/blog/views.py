@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from .models import Post, Author, Comment, Category
 
+@login_required
 def index(request):
     post_num = Post.objects.count()
     author_num = Author.objects.count()

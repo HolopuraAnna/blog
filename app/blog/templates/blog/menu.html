@@ -3,4 +3,18 @@
   <li><a href="{% url 'index' %}">Головна</a></li>
   <li><a href="{% url 'post-list' %}">Пости</a></li>
   <li><a href="{% url 'category_list' %}">Категорії</a></li>
+
+  {% if user.is_authenticated %}
+      <li>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" style="background:none;border:none;color:#0d6efd;cursor:pointer;">
+                Вийти
+            </button>
+        </form>
+      </li>
+  {% else %}
+      <li><a href="{% url 'login' %}">Увійти</a></li>
+      <li><a href="{% url 'registration' %}">Реєстрація</a></li>
+  {% endif %}
 </ul>
