@@ -43,6 +43,10 @@ class Comment(models.Model):
         blank=True,
         related_name="comments"
     )
+    author_name = models.CharField(
+        max_length=100,
+        blank=True
+    )
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 

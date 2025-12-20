@@ -35,7 +35,7 @@
         {% if comment.author %}
           {{ comment.author.username }}
         {% else %}
-          Анонім
+          {{ comment.author_name }}
         {% endif %}
       </strong><br>
 
@@ -46,5 +46,28 @@
     <li>Коментарів ще немає.</li>
   {% endfor %}
 </ul>
+
+<hr>
+<h3>Додати коментар</h3>
+
+<form method="post">
+  {% csrf_token %}
+
+  {% if not user.is_authenticated %}
+    <div class="mb-3">
+      {{ form.author_name.label_tag }}
+      {{ form.author_name }}
+      {{ form.author_name.errors }}
+    </div>
+  {% endif %}
+
+  <div class="mb-3">
+    {{ form.text.label_tag }}
+    {{ form.text }}
+    {{ form.text.errors }}
+  </div>
+
+  <button type="submit" class="btn btn-primary">Надіслати</button>
+</form>
 
 {% endblock %}
