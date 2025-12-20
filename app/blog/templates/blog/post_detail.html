@@ -37,6 +37,10 @@
       {% if request.user.is_authenticated %}
           {% if comment.author == request.user or is_moderator %}
               | <a href="{% url 'comment-edit' comment.id %}">Редагувати</a>
+              | <a href="{% url 'comment-delete' comment.id %}"
+                   onclick="return confirm('Ви впевнені, що хочете видалити коментар?');">
+                   Видалити
+                </a>
           {% endif %}
       {% endif %}
     </li>

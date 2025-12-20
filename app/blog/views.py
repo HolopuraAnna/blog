@@ -101,3 +101,22 @@ def comment_edit(request, pk):
         return redirect('post-detail', pk=comment.post.pk)
 
     return render(request, 'blog/comment_edit.html', {'comment': comment})
+
+
+@login_required
+def comment_delete(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    user = request.user
+
+    is_moderator = (
+        user.is_superuser or
+        user.groups.filter(name='Moderator').exists()
+    )
+
+    # перевірка прав
+    if comment.author and comment.author != user and not is_moderator:
+        return HttpResponseForbidden("Ви не маєте прав видаляти цей коментар")
+
+    post_pk = comment.post.pk
+    comment.delete()
+    return redirect('post-detail', pk=post_pk)
