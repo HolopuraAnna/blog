@@ -31,16 +31,14 @@
 <ul>
   {% for comment in comments %}
     <li>
-      <strong>
-        {% if comment.author %}
-          {{ comment.author.username }}
-        {% else %}
-          {{ comment.author_name }}
-        {% endif %}
-      </strong><br>
-
-      {{ comment.text }}<br>
+      <p>{{ comment.text }}</p>
       <small>{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+
+      {% if request.user.is_authenticated %}
+          {% if comment.author == request.user or is_moderator %}
+              | <a href="{% url 'comment-edit' comment.id %}">Редагувати</a>
+          {% endif %}
+      {% endif %}
     </li>
   {% empty %}
     <li>Коментарів ще немає.</li>

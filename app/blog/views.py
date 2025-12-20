@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Author, Comment, Category
 from .forms import CommentForm
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 
 def index(request):
@@ -55,10 +57,18 @@ def post_detail(request, pk):
     else:
         form = CommentForm()
 
+    is_moderator = False
+    if request.user.is_authenticated:
+        is_moderator = (
+                request.user.is_superuser or
+                request.user.groups.filter(name='Moderator').exists()
+        )
+
     context = {
         'post': post,
         'comments': comments,
         'form': form,
+        'is_moderator': is_moderator,
     }
     return render(request, 'blog/post_detail.html', context)
 
@@ -69,3 +79,25 @@ def category_list(request):
         'categories': categories,
     }
     return render(request, 'blog/category_list.html', context)
+
+
+@login_required
+def comment_edit(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+
+    user = request.user
+    is_moderator = (
+            user.is_superuser or
+            user.groups.filter(name='Moderator').exists()
+    )
+
+    # перевірка прав
+    if comment.author and comment.author != request.user and not is_moderator:
+        return HttpResponseForbidden("Ви не маєте прав редагувати цей коментар")
+
+    if request.method == 'POST':
+        comment.text = request.POST.get('text')
+        comment.save()
+        return redirect('post-detail', pk=comment.post.pk)
+
+    return render(request, 'blog/comment_edit.html', {'comment': comment})

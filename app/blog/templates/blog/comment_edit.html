@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Редагування коментаря{% endblock %}
+
+{% block content %}
+<h2>Редагувати коментар</h2>
+
+<form method="post">
+  {% csrf_token %}
+  <div class="mb-3">
+    <textarea name="text" class="form-control" rows="5">{{ comment.text }}</textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Зберегти</button>
+  <a href="{% url 'post-detail' comment.post.pk %}" class="btn btn-secondary">Скасувати</a>
+</form>
+{% endblock %}
