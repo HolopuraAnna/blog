@@ -60,6 +60,16 @@ services:
     depends_on:
       - web
 
+  vue:
+    build: ./vue
+    container_name: blog_vue
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./vue:/app
+    depends_on:
+      - web
+
 volumes:
   postgres_data:
   static_volume:
